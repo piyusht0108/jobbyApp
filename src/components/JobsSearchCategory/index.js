@@ -3,8 +3,10 @@ import './index.css'
 const JobsSearchCategory = props => {
   const {
     employmentTypesList,
+    locationTypesList,
     salaryRangesList,
     onSelectEmploymentType,
+    onSelectLocationType,
     onSelectRange,
   } = props
   return (
@@ -49,6 +51,28 @@ const JobsSearchCategory = props => {
                   onClick={onSelectItem}
                 />
                 <label htmlFor={salaryRangeId}>{label}</label>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+      <div>
+        <h1 className="category-heading">Location</h1>
+        <ul className="employment-type-list">
+          {locationTypesList.map(eachItem => {
+            const {locationTypeId, label} = eachItem
+            const onSelectItem = () => {
+              onSelectLocationType(locationTypeId)
+            }
+            return (
+              <li className="employment-type-item" key={locationTypeId}>
+                <input
+                  type="checkbox"
+                  id={locationTypeId}
+                  value={locationTypeId}
+                  onClick={onSelectItem}
+                />
+                <label htmlFor={locationTypeId}>{label}</label>
               </li>
             )
           })}

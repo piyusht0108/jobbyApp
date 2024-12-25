@@ -27,6 +27,29 @@ const employmentTypesList = [
   },
 ]
 
+const locationTypesList = [
+  {
+    label: 'Hyderabad',
+    locationTypeId: 'HYDERABAD',
+  },
+  {
+    label: 'Bangalore',
+    locationTypeId: 'BANGALORE',
+  },
+  {
+    label: 'Chennai',
+    locationTypeId: 'CHENNAI',
+  },
+  {
+    label: 'Delhi',
+    locationTypeId: 'DELHI',
+  },
+  {
+    label: 'Mumbai',
+    locationTypeId: 'MUMBAI',
+  },
+]
+
 const salaryRangesList = [
   {
     salaryRangeId: '1000000',
@@ -65,6 +88,7 @@ class Jobs extends Component {
   state = {
     profileDetails: [],
     employmentType: [],
+    locationType: [],
     minimumPackage: '',
     searchInput: '',
     jobsList: [],
@@ -148,10 +172,12 @@ class Jobs extends Component {
 
   getJobs = async () => {
     this.setState({jobsStatus: jobsApiStatusConstants.loading})
-    const {searchInput, employmentType, minimumPackage} = this.state
+    // prettier-ignore
+    const {searchInput, employmentType, minimumPackage, locationType} =
+      this.state
     const employmentTypeString = employmentType.join(',')
     console.log(employmentTypeString)
-    const apiUrl = `https://apis.ccbp.in/jobs?employment_type=${employmentTypeString}&minimum_package=${minimumPackage}&search=${searchInput}`
+    const apiUrl = `https://apis.ccbp.in/jobs?employment_type=${employmentTypeString}&minimum_package=${minimumPackage}&search=${searchInput}&location_type=${locationType}`
     const jwtToken = Cookies.get('jwtToken')
     const options = {
       headers: {
@@ -183,6 +209,17 @@ class Jobs extends Component {
       newList.push(id)
     }
     this.setState({employmentType: [...newList]}, this.getJobs)
+  }
+
+  onSelectLocationType = id => {
+    const {locationType} = this.state
+    const newList = [...locationType]
+    if (locationType.includes(id)) {
+      newList.pop(id)
+    } else {
+      newList.push(id)
+    }
+    this.setState({locationType: [...newList]}, this.getJobs)
   }
 
   onChangeSearchInput = event => {
@@ -262,12 +299,14 @@ class Jobs extends Component {
   }
 
   renderJobSearchCAtegory = () => (
-    <div>
+    <div className="job-search-category-section">
       <JobsSearchCategory
         employmentTypesList={employmentTypesList}
+        locationTypesList={locationTypesList}
         salaryRangesList={salaryRangesList}
         onSelectRange={this.onSelectRange}
         onSelectEmploymentType={this.onSelectEmploymentType}
+        onSelectLocationType={this.onSelectLocationType}
       />
     </div>
   )

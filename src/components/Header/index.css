@@ -8,6 +8,7 @@
   padding-top: 8px;
   padding-bottom: 8px;
   background-color: #272727;
+  position: sticky;
 }
 
 .header-website-logo {
